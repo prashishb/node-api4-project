@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const User = require('./users/users-model');
 
 const server = express();
@@ -31,13 +32,16 @@ server.get('/api/users/:id', async (req, res) => {
 
 // POST /api/register
 server.post('/api/register', async (req, res) => {
+  const { username, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
   try {
-    const { username, password } = req.body;
     if (!username || !password) {
-      res.status(400).json({ message: 'Please provide username and password' });
+      res
+        .status(400)
+        .json({ message: 'Please provide a username and password' });
     } else {
-      const user = await User.insert({ username, password });
-      res.status(201).json({ id: user.id, username: user.username });
+      const user = await User.insert({ username, password: hashedPassword });
+      res.status(201).json(user);
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -80,7 +84,8 @@ server.post('/api/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findByUsername(username);
-    if (user.username === username && user.password === password) {
+    const validPassword = bcrypt.compareSync(password, user.password);
+    if (user.username === username && validPassword) {
       res.status(200).json({ message: `Welcome ${user.username}` });
     } else {
       res.status(401).json({ message: 'Invalid Credentials' });

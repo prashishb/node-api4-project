@@ -1,14 +1,15 @@
 const { nanoid } = require('nanoid');
+const bcrypt = require('bcrypt');
 
 function getId() {
   return nanoid().slice(0, 5);
 }
 
 let users = [
-  { id: getId(), username: 'lambda', password: 'school' },
-  { id: getId(), username: 'ethan', password: 'hunt' },
-  { id: getId(), username: 'james', password: 'bond' },
-  { id: getId(), username: 'jason', password: 'bourne' },
+  { id: getId(), username: 'lambda', password: bcrypt.hashSync('school', 10) },
+  { id: getId(), username: 'ethan', password: bcrypt.hashSync('hunt', 10) },
+  { id: getId(), username: 'james', password: bcrypt.hashSync('bond', 10) },
+  { id: getId(), username: 'jason', password: bcrypt.hashSync('bourne', 10) },
 ];
 
 module.exports = {
