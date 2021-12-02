@@ -5,10 +5,10 @@ function getId() {
 }
 
 let users = [
-  { id: getId(), name: 'lambda', password: 'school' },
-  { id: getId(), name: 'ethan', password: 'hunt' },
-  { id: getId(), name: 'james', password: 'bond' },
-  { id: getId(), name: 'jason', password: 'bourne' },
+  { id: getId(), username: 'lambda', password: 'school' },
+  { id: getId(), username: 'ethan', password: 'hunt' },
+  { id: getId(), username: 'james', password: 'bond' },
+  { id: getId(), username: 'jason', password: 'bourne' },
 ];
 
 module.exports = {
@@ -23,9 +23,9 @@ module.exports = {
     return user;
   },
 
-  async insert({ name, password }) {
+  async insert({ username, password }) {
     // INSERT INTO users (id, name, password) VALUES (?, ?, ?)
-    const newUser = { id: getId(), name, password };
+    const newUser = { id: getId(), username, password };
     users.push(newUser);
     return newUser;
   },
