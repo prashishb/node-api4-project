@@ -75,4 +75,19 @@ server.delete('/api/users/:id', async (req, res) => {
   }
 });
 
+// POST /api/login
+server.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findByUsername(username);
+    if (user.username === username && user.password === password) {
+      res.status(200).json({ message: `Welcome ${user.username}` });
+    } else {
+      res.status(401).json({ message: 'Invalid Credentials' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = server;

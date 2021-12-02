@@ -23,6 +23,12 @@ module.exports = {
     return user;
   },
 
+  async findByUsername(username) {
+    // SELECT * FROM users WHERE username = ?
+    const user = users.find((user) => user.username === username);
+    return user;
+  },
+
   async insert({ username, password }) {
     // INSERT INTO users (id, name, password) VALUES (?, ?, ?)
     const newUser = { id: getId(), username, password };
